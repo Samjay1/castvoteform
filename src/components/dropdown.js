@@ -15,7 +15,7 @@ const Dropdown = ({defaultValue,onValueChange,errorState,question,questionName, 
                 <div className="answers">
                     <div className="answer-item">
                         <select name={questionName} onChange={onValueChange} className="border focus:outline-none lg:w-1/2 w-full focus:border-black text-input bg-red-50 rounded py-2" id="inputGroupSelect01">
-                            <option disabled   defaultValue={'Choose'}>Choose...</option>
+                            <option disabled  selected defaultValue={'Choose'}>Choose...</option>
                             {answerList}
                         </select>
                     </div>

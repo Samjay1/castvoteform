@@ -1,5 +1,5 @@
 import Footer from '../DashboardComponents/Footer'
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import Nav from "../DashboardComponents/Nav";
 import useFetch from '../Network/UseFetch';
 
@@ -7,6 +7,7 @@ const Nominee = ()=>{
     const BASE_URL= 'https://castvotegh.awinteck.com/organiser';
     // const TEST_URL= 'http://localhost:7001/organiser';
 
+    const navigator = useNavigate();
         const org_id = window.sessionStorage.getItem('org_id')
         const {response} = useFetch(`${BASE_URL}/formlist/${org_id}`)
         console.log('response :>> ', response);
@@ -19,14 +20,14 @@ const Nominee = ()=>{
                         <div className="bg-purple-100 text-purple-700 shadow-lg   text-sm rounded-xl">
                             <div className="flex justify-between px-4 py-2 bg-purple-600 shadow-lg rounded-t-xl font-bold text-white transition duration-200">
                                <p className='text-lg mt-1 truncate'>{value.title}</p>  
-                               <Link className="flex hover:text-purple-800 hover:bg-gray-200 px-3 py-2 rounded transition duration-100" to={`${process.env.PUBLIC_URL}/${value.id}`}>
+                               <Link className="flex hover:text-purple-800 hover:bg-gray-200 px-3 py-2 rounded transition duration-100" to={`${process.env.PUBLIC_URL}/fill/${value.id}`}>
                                 Preview 
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
                                     </svg>
                                 </Link>
                             </div>
-                            <img className="h-24 w-full object-cover  " src={value?.banner_image? `http://localhost:7001/${value?.banner_image}` :"https://cdn.pixabay.com/photo/2016/11/13/12/52/kuala-lumpur-1820944_1280.jpg"} alt="" />
+                            <img className="h-24 w-full object-cover  " src={value?.banner_image? `https://castvotegh.awinteck.com/${value?.banner_image}` :"https://cdn.pixabay.com/photo/2016/11/13/12/52/kuala-lumpur-1820944_1280.jpg"} alt="" />
                         
                             <div className="p-4">
                                 <p>Total Nominees</p>
@@ -44,23 +45,28 @@ const Nominee = ()=>{
             );
         })
        
-    return (
-        <>
-            <div className="relative min-h-screen md:flex">
-                <Nav nominee={true} />
-                <main className="lg:mx-5 my-5 w-full px-5">
-                {/* <!-- BASIC PROFILE INFO --> */}
-                <p className="text-2xl font-bold text-gray-800">Nominee Forms</p>
-                <div className="grid lg:grid-cols-3 grid-cols-1 gap-4">
-                    
-                    {singleForm ? singleForm :  <p className="text-xl">No data available yet</p>}
+        if(!org_id){
+            console.log('nominee org_id null:>> ', org_id);
+            navigator(`${process.env.PUBLIC_URL}/login`)
+        }else{
+            return (
+                <>
+                    <div className="relative min-h-screen md:flex">
+                        <Nav nominee={true} />
+                        <main className="lg:mx-5 my-5 w-full px-5">
+                        {/* <!-- BASIC PROFILE INFO --> */}
+                        <p className="text-2xl font-bold text-gray-800">Nominee Forms</p>
+                        <div className="grid lg:grid-cols-3 grid-cols-1 gap-4">
+                            
+                            {singleForm ? singleForm :  <p className="text-xl">No data available yet</p>}
+                        </div>
+                        
+                        </main>
                 </div>
-                
-                </main>
-           </div>
-           <Footer/>
-        </>
-    )
+                <Footer/>
+                </>
+            )
+        }
 }
 
 export default Nominee;

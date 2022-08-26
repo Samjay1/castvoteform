@@ -43,7 +43,7 @@ const NomineeTable = ()=>{
                 <main className="lg:mx-5 my-5 w-full px-5">
                 {/* <!-- BASIC PROFILE INFO --> */}
                 <p className="text-2xl font-bold text-gray-800">Nominee </p>
-                <div>
+                <div className='overflow-auto relative w-full'>
                     <Table table_name={'Nominee table'} table_label={tableHead}
                     table_data={tableBody} />
                  </div>

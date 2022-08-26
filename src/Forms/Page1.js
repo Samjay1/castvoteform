@@ -21,7 +21,9 @@ const Page1 = ()=>{
 
     const [errorMessage, setErrorMessage] = useState('');
     const [firstClickState, setFirstClickState] = useState(false);
+
     const {id} = useParams()
+
     const {response} = useFetch(`${BASE_URL}/previewform/${id}`)
     const navigate = useNavigate();
     const [ans1, setAns1] = useState('');
@@ -125,9 +127,7 @@ const Page1 = ()=>{
             ans9,
             ans10
         }
-        console.log('posting here',data)
-        let org_id = window.sessionStorage.getItem('org_id')
-        console.log('org_id :>> ', org_id);
+        console.log('posting here',data) 
         let formdata = new FormData()
         formdata.append('org_id', response.org_id)
         formdata.append('q_id', id)
@@ -257,8 +257,18 @@ const Page1 = ()=>{
             <div className='bg-gray-100 border shadow-lg rounded-xl my-4 px-4 py-3 text-justify'>
                 <p className='text-center text-4xl font-bold'>{response?.title!=='null'?response?.title:'Currently Unavailable'} </p>
 
-                <p className='text-center text-4xl font-bold'>{response ===null &&'FORM CLOSED'} </p>
+                {response === null 
+                ? <p className='text-center text-4xl font-bold'>FORM LOADING...</p>
+                : response.length === 0 ?
+                    <div>
+                        <p className='text-center text-4xl font-bold'>Form is Unavailable.</p>
+                        <p className='text-xl text-center'>Contact the organiser for more information</p>
+                    </div>
+                : null
+                } 
                 <p className='text-xl text-center'>{response?.description!=='null'?response?.description:'Contact the organiser for more information'} </p>
+                   
+               
             </div>
             {/* DESCRIPTION */}
             {response?.q1?
@@ -299,7 +309,6 @@ const Page1 = ()=>{
 
             <Footer key={'footer'} title={'Submit'} onTap={onSubmit}  back_button='false' page={'1 of 1'}></Footer>
             {/* <Footer key={'footer'} title={'Next'} onTap={onTapped} back_button='true' page={1}></Footer> */}
-
 
             <div className='m-3'>
                 <p className="text-base text-center text-gray-500">&copy; Copyrights 2020 <a className='hover:text-red-500' href="https://castvotegh.com/">Castvote</a> All rights reserved.</p>

@@ -8,7 +8,7 @@ const Login = ()=>{
     const BASE_URL= 'https://castvotegh.awinteck.com/organiser';
     // const TEST_URL= 'http://localhost:7001/organiser';
 
-    
+    // window.sessionStorage.clear();
     const navigator = useNavigate();
 
     const [message, setMessage] = useState('');
@@ -38,6 +38,7 @@ const Login = ()=>{
     }
 
     const OnSubmit = ()=>{
+        window.sessionStorage.clear();
         console.log('email,password :>> ', email,password);
         setErrorEmail(email.length === 0? true:false)
         setErrorEmailMessage(email.length === 0 && 'This is a required question')
@@ -57,7 +58,8 @@ const Login = ()=>{
                 if(response.data.status){
                     setMessage('Login Successfully')
                     let org_id = response.data.user.id
-                    window.sessionStorage.clear();
+                    
+                    console.log('login org_id :>> ', org_id);
                     window.sessionStorage.setItem('org_id', org_id)
                     setTimeout(()=>{
                         setMessage('')
@@ -65,10 +67,13 @@ const Login = ()=>{
                     },1000)
                 }
             }).catch((error)=>{
+                setMessage('Login Failed. Try again')
+                setTimeout(()=>{
+                    setMessage('')
+                    navigator(`${process.env.PUBLIC_URL}/login`)
+                },2000)
                 console.log('error :>> ', error);
             })
-
-            
         }
     }
 

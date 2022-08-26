@@ -72,7 +72,7 @@ const MyBar = ({data, xValue, barData}) => {
     //   );
 
       return(
-        <BarChart width={830} height={250} data={data}  barSize={60}>
+        <BarChart width={630} height={250} data={data}  barSize={60}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey={xValue} />
             <YAxis />

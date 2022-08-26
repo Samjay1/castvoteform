@@ -31,7 +31,7 @@ const Nav = ({dash=false,form=false,addform=false,nominee=false,payment=false,se
             </div> 
         </div> 
         {/* <!-- sidebar --> */}
-        <div className={menuShow? "sidebar bg-gray-100 border border-gray-100 text-white lg:w-72 absolute md:relative inset-y-0 left-0 transform sm:-translate-x-full md:translate-x-0 transition duration-300 ease-in-out": "sidebar bg-gray-100 border border-gray-100 text-white w-72 absolute md:relative inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition duration-300 ease-in-out"}>
+        <div className={menuShow? "sidebar z-10 bg-gray-100 border border-gray-100 text-white lg:w-72 absolute md:relative inset-y-0 left-0 transform sm:-translate-x-full md:translate-x-0 transition duration-300 ease-in-out": "sidebar bg-gray-100 border border-gray-100 text-white w-72 absolute md:relative inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition duration-300 ease-in-out"}>
            {/* <!-- logo --> */}
           <Link className=""  to={`${process.env.PUBLIC_URL}/dashboard`}>
             <img className="h-16 bg-gray-100 p-2 m-3 rounded-b-3xl mb-0 m-auto" src={process.env.PUBLIC_URL+"/logo.png"} alt=""/>

@@ -6,6 +6,7 @@ import Dropdown from '../components/dropdown';
 import React from 'react';
 import axios from 'axios';
 import Radio from '../components/radio';
+import Login from './Login';
 
 class Forms extends React.Component{
     constructor(){
@@ -320,7 +321,11 @@ class Forms extends React.Component{
     }
 
     render(){
+        let org_id = window.sessionStorage.getItem('org_id')
         console.log('resValue', this.state.resValue1)
+        if(!org_id){
+            return <Login/>
+        }else{
         return (
             <>
                 <div className="relative min-h-screen md:flex">
@@ -333,7 +338,7 @@ class Forms extends React.Component{
                     <p className="text-2xl font-bold text-gray-800">Add Nominee Form</p>
     
 
-                    <div className="border my-5 space-y-2 lg:w-1/2 p-5 shadow-xl rounded-xl">
+                    <div className="border my-5 space-y-2  p-5 shadow-xl rounded-xl">
                         <p className='pl-2 text-2xl'>Form Title</p>
                         <label>
                             <input name={'title'} onChange={(e)=>{this.setState({title:e.target.value})}} type="text" className=" border-b focus:outline-none w-full focus:border-black text-input rounded-0 pb-2 px-2 hover:bg-red-50"  placeholder="Enter the Title"/>
@@ -364,7 +369,7 @@ class Forms extends React.Component{
                         </div>
 
                         {/*     QUESTION FORMAT */}
-                        <div className='bg-blue-50 p-5 rounded-xl'>
+                        <div className='col-span-2 lg:col-span-1 bg-blue-50 p-5 rounded-xl'>
                             <div className='flex justify-between font-bold'>
                                 <p className='text-xl'>Question 1</p>
                                 <div className='space-x-1'>
@@ -382,7 +387,7 @@ class Forms extends React.Component{
                         
                         </div>
                         {/*     QUESTION FORMAT */}
-                        <div className='bg-blue-50 p-5 rounded-xl'>
+                        <div className='col-span-2 lg:col-span-1 bg-blue-50 p-5 rounded-xl'>
                             <div className='flex justify-between font-bold'>
                                 <p className='text-xl'>Question 2</p>
                                 <div className='space-x-1'>
@@ -401,7 +406,7 @@ class Forms extends React.Component{
                         </div>
     
                         {/*     QUESTION FORMAT */}
-                        <div className='bg-blue-50 p-5 rounded-xl'>
+                        <div className='col-span-2 lg:col-span-1 bg-blue-50 p-5 rounded-xl'>
                             <div className='flex justify-between font-bold'>
                                 <p className='text-xl'>Question 3</p>
                                 <div className='space-x-1'>
@@ -420,7 +425,7 @@ class Forms extends React.Component{
                         </div>
 
                         {/*     QUESTION FORMAT */}
-                        <div className='bg-blue-50 p-5 rounded-xl'>
+                        <div className='col-span-2 lg:col-span-1 bg-blue-50 p-5 rounded-xl'>
                             <div className='flex justify-between font-bold'>
                                 <p className='text-xl'>Question 4</p>
                                 <div className='space-x-1'>
@@ -439,7 +444,7 @@ class Forms extends React.Component{
                         </div>
                         
                           {/*     QUESTION FORMAT */}
-                          <div className='bg-blue-50 p-5 rounded-xl'>
+                          <div className='col-span-2 lg:col-span-1 bg-blue-50 p-5 rounded-xl'>
                             <div className='flex justify-between font-bold'>
                                 <p className='text-xl'>Question 5</p>
                                 <div className='space-x-1'>
@@ -459,7 +464,7 @@ class Forms extends React.Component{
                         
     
                           {/*     QUESTION FORMAT */}
-                          <div className='bg-blue-50 p-5 rounded-xl'>
+                          <div className='col-span-2 lg:col-span-1 bg-blue-50 p-5 rounded-xl'>
                             <div className='flex justify-between font-bold'>
                                 <p className='text-xl'>Question 6</p>
                                 <div className='space-x-1'>
@@ -479,7 +484,7 @@ class Forms extends React.Component{
                         
     
                           {/*     QUESTION FORMAT */}
-                          <div className='bg-blue-50 p-5 rounded-xl'>
+                          <div className='col-span-2 lg:col-span-1 bg-blue-50 p-5 rounded-xl'>
                             <div className='flex justify-between font-bold'>
                                 <p className='text-xl'>Question 7</p>
                                 <div className='space-x-1'>
@@ -497,7 +502,7 @@ class Forms extends React.Component{
                         </div>
     
                         {/*     QUESTION FORMAT */}
-                        <div className='bg-blue-50 p-5 rounded-xl'>
+                        <div className='col-span-2 lg:col-span-1 bg-blue-50 p-5 rounded-xl'>
                             <div className='flex justify-between font-bold'>
                                 <p className='text-xl'>Question 8</p>
                                 <div className='space-x-1'>
@@ -516,7 +521,7 @@ class Forms extends React.Component{
     
     
                         {/*     QUESTION FORMAT */}
-                        <div className='bg-blue-50 p-5 rounded-xl'>
+                        <div className='col-span-2 lg:col-span-1 bg-blue-50 p-5 rounded-xl'>
                             <div className='flex justify-between font-bold'>
                                 <p className='text-xl'>Question 9</p>
                                 <div className='space-x-1'>
@@ -534,7 +539,7 @@ class Forms extends React.Component{
                         </div>
                         
                         {/*     QUESTION FORMAT */}
-                        {/* <div className='bg-blue-50 p-5 rounded-xl'>
+                        {/* <div className='col-span-2 lg:col-span-1 bg-blue-50 p-5 rounded-xl'>
                             <div className='flex justify-between font-bold'>
                                 <p className='text-xl'>Question 10</p>
                                 <div className='space-x-1'>
@@ -560,6 +565,7 @@ class Forms extends React.Component{
                <Footer/>
             </>
         )
+         }
     }
     
 }

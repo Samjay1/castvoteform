@@ -1,7 +1,6 @@
 {
   "name": "castvotegh",
   "version": "0.1.0",
-  "homepage": "/nomination",
   "private": true,
   "dependencies": {
     "@progress/kendo-react-excel-export": "^5.5.0",

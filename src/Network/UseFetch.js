@@ -11,10 +11,12 @@ const useFetch = (url)=>{
         .then((response) => response.data)
         .then((jsonResponse)=>{
             let data = jsonResponse.response
+            
             setResponse(data)
         }).catch((error)=>{
             console.log(error)
             setError(error)
+            setResponse([])
         })
         .finally(()=>{
             setLoading(false)
