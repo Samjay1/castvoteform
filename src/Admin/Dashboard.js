@@ -14,7 +14,7 @@ class Dashboard extends Component{
         super()
         this.state={
             BASE_URL: 'https://castvotegh.awinteck.com/admin',
-            TEST_URL: 'http://localhost:7001/admin',
+            // TEST_URL: 'http://localhost:7001/admin',
             message:null,
             totals:{},
             charts:{}
@@ -36,9 +36,10 @@ class Dashboard extends Component{
     }
     render(){
         
-        const label = ['Name','Email','Used','Form limit', 'Date','Status']
+        const label = ['Name','Email','Used', 'Date','Status']
         let admin_id = window.sessionStorage.getItem('admin_id') 
-        if(admin_id){
+        console.log('admin_id :>> ', admin_id);
+        if(!admin_id){
             return <Login/>
         }else{
             return (
@@ -117,7 +118,7 @@ class Dashboard extends Component{
                             
                         </div>
                         <div className="flex flex-wrap space-y-5 lg:space-y-0 w-full my-4  shadow-lg lg:p-4 p-2 border rounded-xl">
-                            <div className="overflow-auto relative -z-10">
+                        <div className="overflow-auto relative ">
                                 {this.state.charts.nominees?<MyBar data={this.state.charts.nominees.filter((value,index)=>index<=5)} barData={'nominee_count'} xValue={'name'}/> :  <p className="text-2xl mx-auto text-center">No data available yet</p> }
                             
                             </div>
@@ -128,7 +129,7 @@ class Dashboard extends Component{
                         </div>
                         {/* <BarChart /> */}
 
-                        <div>
+                        <div className="">
                             <Table table_name={'Recent Organisers'} table_label={label}
                             table_data={this.state.charts.forms?.filter((value,index)=> index<=25)} date={false} download={false}/>
                         </div>

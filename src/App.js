@@ -106,7 +106,7 @@ function App() {
              <Register/>
          </ErrorBoundary>}/>
  
-         <Route exact path={`${process.env.PUBLIC_URL}/resetpassword`} element={<ResetPassword/>}/>
+         <Route exact path={`${process.env.PUBLIC_URL}/resetpassword/:email`} element={<ResetPassword/>}/>
          <Route exact path={`${process.env.PUBLIC_URL}/forgotpassword`} element={<ForgotPassword/>}/>
          <Route exact path={`${process.env.PUBLIC_URL}/dashboard`} element={
          <ErrorBoundary>

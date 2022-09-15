@@ -13,29 +13,30 @@ const OrgDashboard = ()=>{
 
     const BASE_URL= 'https://castvotegh.awinteck.com/organiser';
     const BASE_URL2= 'https://castvotegh.awinteck.com/admin';
-    // const TEST_URL= 'http://localhost:7001/admin';
- 
+    // const TEST_URL= 'http://localhost:7001/organiser';
+    // const TEST_URL2= 'http://localhost:7001/admin';
 
     const [dashboardData, setDashboardData] = useState(null)
     const [chartData, setChartData] = useState([])
     const [organiser, setOrganiser] = useState([])
-
-    console.log('org_id :>lk> ', orgId);
+    const [passwordState, setPasswordState] = useState(null)
+ 
         useEffect(()=>{
             axios.all([
                 axios.get(`${BASE_URL}/dashboard/${orgId}`),
                 axios.get(`${BASE_URL2}/organiser/${orgId}`)
             ])
             .then(axios.spread((dashboard,organiser)=>{
-                console.log('dashboard :>> ',organiser.data.response);
+                // console.log('dashboard :>> ',organiser.data.response);
                 setDashboardData(dashboard.data.response)
                 setChartData(dashboard.data.response.chart)
                 setOrganiser(organiser.data.response)
+                setPasswordState(organiser.data.response.reset) 
             }))
             .catch((error)=>{
                 console.log('error :>> ', error);
             })
-        },[orgId])
+        },[orgId,passwordState])
 
         
         const singleForm = chartData?.map((value,index)=>{
@@ -78,9 +79,20 @@ const OrgDashboard = ()=>{
                 </div>
             );
         })
+
+        const toggle_password_state = ()=>{
+            let state = passwordState==='CLOSED'? 'OPENED': 'CLOSED'
+                axios.get(`${BASE_URL2}/toggle_password/${orgId}/${state}`)
+                .then((response)=>{
+                    setPasswordState(state);
+                    console.log('status :>> ', response.data);
+                }).catch((error)=>{
+                    console.log('error :>> ', error);
+                })
+        }
  
         let admin_id = window.sessionStorage.getItem('admin_id') 
-        if(admin_id){
+        if(!admin_id){
             return <Login/>
         }else{
             return (
@@ -94,6 +106,14 @@ const OrgDashboard = ()=>{
                         <div>
                             <p className="text-xl uppercase font-bold">{organiser.name} <span className="lowercase">({organiser.email})</span></p>
                         </div>
+                    </div>
+                    <div className="my-3">
+                    {passwordState==='CLOSED'?
+                    <p>Password Reset <button onClick={toggle_password_state} className="p-1 px-2 bg-red-700 hover:bg-red-800 text-white rounded-xl font-bold"> CLOSED </button> </p>
+                    :
+                    <p>Password Reset <button onClick={toggle_password_state} className="p-1 px-2 bg-green-700 hover:bg-green-800 text-white rounded-xl font-bold"> OPENED </button> </p>
+                    }
+                        
                     </div>
 
                     {/* <!-- DASHBOARD CARDS --> */}

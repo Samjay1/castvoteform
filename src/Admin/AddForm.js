@@ -8,6 +8,7 @@ import React from 'react';
 import axios from 'axios';
 import Radio from '../components/radio';
 import Login from '../Admin/Login';
+import * as XLSX from 'xlsx';
 
 class Forms extends React.Component{
     constructor(){
@@ -21,7 +22,7 @@ class Forms extends React.Component{
             title:null,
             description:null,
             bannerImage:null,
-            question1:'',question2:'',question3:'',question4:'',question5:'',question6:'',question7:'',question8:'',question9:'',question10:'',question11:'',
+            question1:'',question2:'',question3:'Category',question4:'',question5:'',question6:'',question7:'',question8:'',question9:'',question10:'',question11:'',
             resType1:null,resType2:null,resType3:null,resType4:null,resType5:null,resType6:null,resType7:null,resType8:null,resType9:null,resType10:null,resType11:null,
             checkState1:false,checkState2:false,checkState3:false,checkState4:false,checkState5:false,checkState6:false,checkState7:false,checkState8:false,checkState9:false,checkState10:false,checkState11:false,
             resValue1:null,resValue2:null,resValue3:null,resValue4:null,resValue5:null,resValue6:null,resValue7:null,resValue8:null,resValue9:null,resValue11:null,
@@ -36,6 +37,8 @@ class Forms extends React.Component{
         this.onChangeRes = this.onChangeRes.bind(this)
         this.onUploadChange = this.onUploadChange.bind(this)
         this.endmessage = this.endmessage.bind(this)
+        this.readUploadFile = this.readUploadFile.bind(this)
+        this.onChangeResValue = this.onChangeResValue.bind(this)
     }
 
     componentDidMount(){
@@ -184,6 +187,71 @@ class Forms extends React.Component{
             case 'orgId':
                 this.setState({
                     orgId: e.target.value
+                })
+                break;
+            default:
+                break;
+    }
+    }
+
+    onChangeResValue =(data)=>{
+        console.log('general--------resValue:',data)
+        switch(data.name){
+            case 'resValue1':
+                console.log('--------resValue1:',data)
+                this.setState({
+                    resValue1: data.value
+                })
+                break;
+            case 'resValue2':
+                console.log('---------resValue2:',data)
+                this.setState({
+                    resValue2: data.value
+                })
+                break;
+            case 'resValue3':
+                this.setState({
+                    resValue3: data.value
+                })
+                break;
+            case 'resValue4':
+                this.setState({
+                    resValue4: data.value
+                })
+                break;
+            case 'resValue5':
+                this.setState({
+                    resValue5: data.value
+                })
+                break;
+            case 'resValue6':
+                this.setState({
+                    resValue6: data.value
+                })
+                break;
+            case 'resValue7':
+                this.setState({
+                    resValue7: data.value
+                })
+                break;
+            case 'resValue8':
+                this.setState({
+                    resValue8: data.value
+                })
+                break;
+            case 'resValue9':
+                this.setState({
+                    resValue9: data.value
+                })
+                break;
+            case 'resValue10':
+                this.setState({
+                    resValue10: data.value
+                })
+                break;
+            case 'resValue11':
+                this.setState({
+                    resValue11: data.value
                 })
                 break;
             default:
@@ -360,9 +428,37 @@ class Forms extends React.Component{
         } 
     }
 
+    readUploadFile = (e, name)=>{
+        console.log('readuploadfile :>>');
+        e.preventDefault();
+        if(e.target.files){
+            const reader = new FileReader();
+            reader.onload = (e)=>{
+                const data = e.target.result;
+                const workbook = XLSX.read(data, {type: 'array'});
+                const sheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[sheetName];
+                const json = XLSX.utils.sheet_to_json(worksheet);
+                console.log('json :>> ', json);
+                let formatedList = '';
+                let customData = json.map((value,index)=>{
+                    if(index===0){
+                        return formatedList = value.List
+                    }else{
+                        return formatedList += "="+ value.List
+                    }
+                })
+                this.onChangeResValue({name:name, value:formatedList})
+                console.log('customData :>> ', customData);
+                console.log('formatedList :>> ', formatedList);
+            };
+            reader.readAsArrayBuffer(e.target.files[0]);
+        }
+
+    }
     render(){ 
         let admin_id = window.sessionStorage.getItem('admin_id')
-        if(admin_id){
+        if(!admin_id){
             return <Login/>
         }else{
         return (
@@ -400,7 +496,7 @@ class Forms extends React.Component{
                         <Upload question={'Upload Form Banner Image (Must be landscape 214x45)'} onValueChange={this.onUploadChange}/>
                     </div>
                     
-                    <div className='grid lg:grid-cols-2 gap-2 border p-5 rounded-xl'>
+                    <div className='grid lg:grid-cols-2 gap-2 border lg:p-5 rounded-xl'>
                          {/*     QUESTION FORMAT */}
                          <div className='col-span-2 bg-blue-50 p-5 rounded-xl'>
                             <div className='flex justify-between font-bold'>
@@ -427,6 +523,20 @@ class Forms extends React.Component{
                             <div>
                                 <textarea onChange={(e)=>{this.setState({resValue1:e.target.value})}} className='w-full rounded-xl py-6 px-5 mt-2 bg-white space-y-3 shadow-lg' placeholder='eg. Male=Female=other ' value={this.state.resValue1}></textarea>
                                 <p className='text-red-500 ml-1'>NB: Seperate your expected response with = </p>
+                               <div>
+                                    <form>
+                                        <label htmlFor='upload' className='font-bold'>Bulk upload</label> 
+                                        <input 
+                                        className={'mx-3'}
+                                        type="file"
+                                        name='upload'
+                                        id='upload'
+                                        onChange={(e)=>{ this.readUploadFile(e,'resValue1')}} />
+                                    </form>
+                                    <div className='py-2'>
+                                        <a className='bg-blue-100 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-500 hover:text-white p-1 px-2' href="https://castvotegh.awinteck.com/public/List.xlsx">Download Sample</a>
+                                    </div>
+                               </div>
                             </div>: null}
                         
                         </div>
@@ -443,8 +553,22 @@ class Forms extends React.Component{
                             {/* for getting extra response values for checkbox, radio and dropdown res types */}
                             {this.state.resType2==='DROPDOWN' || this.state.resType2==='RADIO' || this.state.resType2==='CHECKBOX'? 
                             <div>
-                                <textarea onChange={(e)=>{this.setState({resValue2:e.target.value})}} className='w-full rounded-xl py-6 px-5 mt-2 bg-white space-y-3 shadow-lg' placeholder='eg. Male=Female=other ' value={this.state.resValue1}></textarea>
+                                <textarea onChange={(e)=>{this.setState({resValue2:e.target.value})}} className='w-full rounded-xl py-6 px-5 mt-2 bg-white space-y-3 shadow-lg' placeholder='eg. Male=Female=other ' value={this.state.resValue2}></textarea>
                                 <p className='text-red-500 ml-1'>NB: Seperate your expected response with = </p>
+                                <div>
+                                    <form>
+                                        <label htmlFor='upload' className='font-bold'>Bulk upload</label> 
+                                        <input 
+                                        className={'mx-3'}
+                                        type="file"
+                                        name='upload'
+                                        id='upload'
+                                        onChange={(e)=>{this.readUploadFile(e,'resValue2')}} />
+                                    </form>
+                                    <div className='py-2'>
+                                        <a className='bg-blue-100 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-500 hover:text-white p-1 px-2' href="https://castvotegh.awinteck.com/public/List.xlsx">Download Sample</a>
+                                    </div>
+                               </div>
                             </div>: null}
 
                         </div>
@@ -458,12 +582,26 @@ class Forms extends React.Component{
                                 </div>
                             </div>
                             <Text question={'Enter the question'} questionName={'q3'} OnChangeValue={this.onChangeValue}  myValue={this.state.question3}/>
-                            <Dropdown question={'Select Response type'} questionName={'resp3'} onValueChange={this.onChangeRes} answers={['TEXT', 'TEXTAREA','NUMBER', 'RADIO', 'DROPDOWN', 'CHECKBOX','Date']} />
+                            <Dropdown question={'Select Response type'} questionName={'resp3'} onValueChange={this.onChangeRes} answers={['CHECKBOX']} />
                             {/* for getting extra response values for checkbox, radio and dropdown res types */}
-                            {this.state.resType3==='DROPDOWN' || this.state.resType3==='RADIO' || this.state.resType3==='CHECKBOX'? 
+                            {true? 
                             <div>
-                                <textarea onChange={(e)=>{this.setState({resValue3:e.target.value})}} className='w-full rounded-xl py-6 px-5 mt-2 bg-white space-y-3 shadow-lg' placeholder='eg. Male=Female=other ' value={this.state.resValue1}></textarea>
+                                <textarea onChange={(e)=>{this.setState({resValue3:e.target.value})}} className='w-full rounded-xl py-6 px-5 mt-2 bg-white space-y-3 shadow-lg' placeholder='eg. Male=Female=other ' value={this.state.resValue3}></textarea>
                                 <p className='text-red-500 ml-1'>NB: Seperate your expected response with = </p>
+                                <div>
+                                    <form>
+                                        <label htmlFor='upload' className='font-bold'>Bulk upload</label> 
+                                        <input 
+                                        className={'mx-3'}
+                                        type="file"
+                                        name='upload'
+                                        id='upload'
+                                        onChange={(e)=>{ this.readUploadFile(e,'resValue3')}} />
+                                    </form>
+                                    <div className='py-2'>
+                                        <a className='bg-blue-100 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-500 hover:text-white p-1 px-2' href="https://castvotegh.awinteck.com/public/List.xlsx">Download Sample</a>
+                                    </div>
+                               </div>
                             </div>: null}
                             
                         </div>
@@ -481,8 +619,22 @@ class Forms extends React.Component{
                             {/* for getting extra response values for checkbox, radio and dropdown res types */}
                             {this.state.resType4==='DROPDOWN' || this.state.resType4==='RADIO' || this.state.resType4==='CHECKBOX'? 
                             <div>
-                                <textarea onChange={(e)=>{this.setState({resValue4:e.target.value})}} className='w-full rounded-xl py-6 px-5 mt-2 bg-white space-y-3 shadow-lg' placeholder='eg. Male=Female=other ' value={this.state.resValue1}></textarea>
+                                <textarea onChange={(e)=>{this.setState({resValue4:e.target.value})}} className='w-full rounded-xl py-6 px-5 mt-2 bg-white space-y-3 shadow-lg' placeholder='eg. Male=Female=other ' value={this.state.resValue4}></textarea>
                                 <p className='text-red-500 ml-1'>NB: Seperate your expected response with = </p>
+                                <div>
+                                    <form>
+                                        <label htmlFor='upload' className='font-bold'>Bulk upload</label> 
+                                        <input 
+                                        className={'mx-3'}
+                                        type="file"
+                                        name='upload'
+                                        id='upload'
+                                        onChange={(e)=>{ this.readUploadFile(e,'resValue4')}} />
+                                    </form>
+                                    <div className='py-2'>
+                                        <a className='bg-blue-100 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-500 hover:text-white p-1 px-2' href="https://castvotegh.awinteck.com/public/List.xlsx">Download Sample</a>
+                                    </div>
+                               </div>
                             </div>: null}
                             
                         </div>
@@ -500,8 +652,22 @@ class Forms extends React.Component{
                             {/* for getting extra response values for checkbox, radio and dropdown res types */}
                             {this.state.resType5==='DROPDOWN' || this.state.resType5==='RADIO' || this.state.resType5==='CHECKBOX'? 
                             <div>
-                                <textarea onChange={(e)=>{this.setState({resValue5:e.target.value})}} className='w-full rounded-xl py-6 px-5 mt-2 bg-white space-y-3 shadow-lg' placeholder='eg. Male=Female=other ' value={this.state.resValue1}></textarea>
+                                <textarea onChange={(e)=>{this.setState({resValue5:e.target.value})}} className='w-full rounded-xl py-6 px-5 mt-2 bg-white space-y-3 shadow-lg' placeholder='eg. Male=Female=other ' value={this.state.resValue5}></textarea>
                                 <p className='text-red-500 ml-1'>NB: Seperate your expected response with = </p>
+                                <div>
+                                    <form>
+                                        <label htmlFor='upload' className='font-bold'>Bulk upload</label> 
+                                        <input 
+                                        className={'mx-3'}
+                                        type="file"
+                                        name='upload'
+                                        id='upload'
+                                        onChange={(e)=>{ this.readUploadFile(e,'resValue5')}} />
+                                    </form>
+                                    <div className='py-2'>
+                                        <a className='bg-blue-100 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-500 hover:text-white p-1 px-2' href="https://castvotegh.awinteck.com/public/List.xlsx">Download Sample</a>
+                                    </div>
+                               </div>
                             </div>: null}
                             
                         </div>
@@ -520,8 +686,22 @@ class Forms extends React.Component{
                              {/* for getting extra response values for checkbox, radio and dropdown res types */}
                              {this.state.resType6==='DROPDOWN' || this.state.resType6==='RADIO' || this.state.resType6==='CHECKBOX'? 
                             <div>
-                                <textarea onChange={(e)=>{this.setState({resValue6:e.target.value})}} className='w-full rounded-xl py-6 px-5 mt-2 bg-white space-y-3 shadow-lg' placeholder='eg. Male=Female=other ' value={this.state.resValue1}></textarea>
+                                <textarea onChange={(e)=>{this.setState({resValue6:e.target.value})}} className='w-full rounded-xl py-6 px-5 mt-2 bg-white space-y-3 shadow-lg' placeholder='eg. Male=Female=other ' value={this.state.resValue6}></textarea>
                                 <p className='text-red-500 ml-1'>NB: Seperate your expected response with = </p>
+                                <div>
+                                    <form>
+                                        <label htmlFor='upload' className='font-bold'>Bulk upload</label> 
+                                        <input 
+                                        className={'mx-3'}
+                                        type="file"
+                                        name='upload'
+                                        id='upload'
+                                        onChange={(e)=>{ this.readUploadFile(e,'resValue6')}} />
+                                    </form>
+                                    <div className='py-2'>
+                                        <a className='bg-blue-100 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-500 hover:text-white p-1 px-2' href="https://castvotegh.awinteck.com/public/List.xlsx">Download Sample</a>
+                                    </div>
+                               </div>
                             </div>: null}
                             
                         </div>
@@ -540,8 +720,22 @@ class Forms extends React.Component{
                              {/* for getting extra response values for checkbox, radio and dropdown res types */}
                              {this.state.resType7==='DROPDOWN' || this.state.resType7==='RADIO' || this.state.resType7==='CHECKBOX'? 
                             <div>
-                                <textarea onChange={(e)=>{this.setState({resValue7:e.target.value})}} className='w-full rounded-xl py-6 px-5 mt-2 bg-white space-y-3 shadow-lg' placeholder='eg. Male=Female=other ' value={this.state.resValue1}></textarea>
+                                <textarea onChange={(e)=>{this.setState({resValue7:e.target.value})}} className='w-full rounded-xl py-6 px-5 mt-2 bg-white space-y-3 shadow-lg' placeholder='eg. Male=Female=other ' value={this.state.resValue7}></textarea>
                                 <p className='text-red-500 ml-1'>NB: Seperate your expected response with = </p>
+                                <div>
+                                    <form>
+                                        <label htmlFor='upload' className='font-bold'>Bulk upload</label> 
+                                        <input 
+                                        className={'mx-3'}
+                                        type="file"
+                                        name='upload'
+                                        id='upload'
+                                        onChange={(e)=>{ this.readUploadFile(e,'resValue7')}} />
+                                    </form>
+                                    <div className='py-2'>
+                                        <a className='bg-blue-100 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-500 hover:text-white p-1 px-2' href="https://castvotegh.awinteck.com/public/List.xlsx">Download Sample</a>
+                                    </div>
+                               </div>
                             </div>: null}
                         </div>
     
@@ -558,8 +752,22 @@ class Forms extends React.Component{
                              {/* for getting extra response values for checkbox, radio and dropdown res types */}
                              {this.state.resType8==='DROPDOWN' || this.state.resType8==='RADIO' || this.state.resType8==='CHECKBOX'? 
                             <div>
-                                <textarea onChange={(e)=>{this.setState({resValue8:e.target.value})}} className='w-full rounded-xl py-6 px-5 mt-2 bg-white space-y-3 shadow-lg' placeholder='eg. Male=Female=other ' value={this.state.resValue1}></textarea>
+                                <textarea onChange={(e)=>{this.setState({resValue8:e.target.value})}} className='w-full rounded-xl py-6 px-5 mt-2 bg-white space-y-3 shadow-lg' placeholder='eg. Male=Female=other ' value={this.state.resValue8}></textarea>
                                 <p className='text-red-500 ml-1'>NB: Seperate your expected response with = </p>
+                                <div>
+                                    <form>
+                                        <label htmlFor='upload' className='font-bold'>Bulk upload</label> 
+                                        <input 
+                                        className={'mx-3'}
+                                        type="file"
+                                        name='upload'
+                                        id='upload'
+                                        onChange={(e)=>{ this.readUploadFile(e,'resValue8')}} />
+                                    </form>
+                                    <div className='py-2'>
+                                        <a className='bg-blue-100 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-500 hover:text-white p-1 px-2' href="https://castvotegh.awinteck.com/public/List.xlsx">Download Sample</a>
+                                    </div>
+                               </div>
                             </div>: null}
                         </div>
     
@@ -577,8 +785,22 @@ class Forms extends React.Component{
                              {/* for getting extra response values for checkbox, radio and dropdown res types */}
                              {this.state.resType9==='DROPDOWN' || this.state.resType9==='RADIO' || this.state.resType9==='CHECKBOX'? 
                             <div>
-                                <textarea onChange={(e)=>{this.setState({resValue9:e.target.value})}} className='w-full rounded-xl py-6 px-5 mt-2 bg-white space-y-3 shadow-lg' placeholder='eg. Male=Female=other ' value={this.state.resValue1}></textarea>
+                                <textarea onChange={(e)=>{this.setState({resValue9:e.target.value})}} className='w-full rounded-xl py-6 px-5 mt-2 bg-white space-y-3 shadow-lg' placeholder='eg. Male=Female=other ' value={this.state.resValue9}></textarea>
                                 <p className='text-red-500 ml-1'>NB: Seperate your expected response with = </p>
+                                <div>
+                                    <form>
+                                        <label htmlFor='upload' className='font-bold'>Bulk upload</label> 
+                                        <input 
+                                        className={'mx-3'}
+                                        type="file"
+                                        name='upload'
+                                        id='upload'
+                                        onChange={(e)=>{ this.readUploadFile(e,'resValue9')}} />
+                                    </form>
+                                    <div className='py-2'>
+                                        <a className='bg-blue-100 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-500 hover:text-white p-1 px-2' href="https://castvotegh.awinteck.com/public/List.xlsx">Download Sample</a>
+                                    </div>
+                               </div>
                             </div>: null}
                         </div>
 
@@ -597,6 +819,20 @@ class Forms extends React.Component{
                             <div>
                                 <textarea onChange={(e)=>{this.setState({resValue11:e.target.value})}} className='w-full rounded-xl py-6 px-5 mt-2 bg-white space-y-3 shadow-lg' placeholder='eg. Male=Female=other ' value={this.state.resValue11}></textarea>
                                 <p className='text-red-500 ml-1'>NB: Seperate your expected response with = </p>
+                                <div>
+                                    <form>
+                                        <label htmlFor='upload' className='font-bold'>Bulk upload</label> 
+                                        <input 
+                                        className={'mx-3'}
+                                        type="file"
+                                        name='upload'
+                                        id='upload'
+                                        onChange={(e)=>{ this.readUploadFile(e,'resValue11')}} />
+                                    </form>
+                                    <div className='py-2'>
+                                        <a className='bg-blue-100 border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-500 hover:text-white p-1 px-2' href="https://castvotegh.awinteck.com/public/List.xlsx">Download Sample</a>
+                                    </div>
+                               </div>
                             </div>: null}
                         </div>
                         

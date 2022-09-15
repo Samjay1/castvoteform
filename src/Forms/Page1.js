@@ -20,7 +20,6 @@ const Page1 = ()=>{
     // const TEST_URL= 'http://localhost:7001/organiser';
 
     const [errorMessage, setErrorMessage] = useState('');
-    const [firstClickState, setFirstClickState] = useState(false);
 
     const {id} = useParams()
 
@@ -36,6 +35,7 @@ const Page1 = ()=>{
     const [ans8, setAns8] = useState('');
     const [ans9, setAns9] = useState('');
     const [ans10, setAns10] = useState('');
+    const [ans11, setAns11] = useState('');
 
     const [error1, setError1] = useState(true);
     const [error2, setError2] = useState(false);
@@ -47,6 +47,7 @@ const Page1 = ()=>{
     const [error8, setError8] = useState(false);
     const [error9, setError9] = useState(false);
     const [error10, setError10] = useState(false);
+    const [error11, setError11] = useState(false);
 
     console.log('response :>> ', response);
     window.sessionStorage.setItem('banner_image', response?.banner_image)
@@ -67,53 +68,50 @@ const Page1 = ()=>{
 //   }
 
   const onSubmit = ()=>{ 
-    if(response?.q1!==undefined && ans1 === ''){
+    if(response?.q1!==undefined && ans1.length === 0){
         // console.log('Question1:', response.q1, 'Answer:',ans1)
         setError1(true)
         // return; 
     }
-    if(response?.q2!==undefined && ans2 === ''){
+    else if(response?.q2!==undefined && ans2 === ''){
         setError2(true)
         // return; 
     }
-    if((response?.q3!==undefined ) && ans3 === ''){
+    else if((response?.q3!==undefined ) && ans3 === ''){
         setError3(true) 
         console.log('Question3:',response.q3,'Answer:',ans3)
     }
-    if(response?.q4!==undefined && ans4 === ''){
+    else if(response?.q4!==undefined && ans4 === ''){
         setError4(true) 
         console.log('Question4:', response.q4, 'Answer:',ans4)
     }
-    if(response?.q5!==undefined && ans5 === ''){
+    else if(response?.q5!==undefined && ans5 === ''){
         setError5(true) 
         console.log('Question5:', response.q1, 'Answer:',ans5)
     }
-    if(response?.q6!==undefined && ans6 === ''){
+    else if(response?.q6!==undefined && ans6 === ''){
         setError6(true) 
         console.log('Question5:', response.q1, 'Answer:',ans6)
     }
-    if(response?.q7!==undefined && ans7 === ''){
+    else if(response?.q7!==undefined && ans7 === ''){
         setError7(true) 
         console.log('Question7:', response.q1, 'Answer:',ans7)
     }
-    if(response?.q8!==undefined && ans8 === ''){
+    else if(response?.q8!==undefined && ans8 === ''){
         setError8(true) 
         console.log('Question8:', response.q1, 'Answer:',ans8)
     }
-    if(response?.q9!==undefined && ans9 === ''){
+    else if(response?.q9!==undefined && ans9 === ''){
         setError9(true) 
         console.log('Question9:', response.q1, 'Answer:',ans9)
     }
-    if(response?.q10!==undefined && ans10 === ''){
+    else if(response?.q10!==undefined && ans10 === ''){
         setError10(true) 
         console.log('Question10:', response.q1, 'Answer:',ans10)
     }
-    else if(error1 || error2 || error3 || error4 || error5 || error6 || error7 || error8 || error9 || error10){
-        console.log('all answers empty',  error1,error2,error3,error4,error5,error6,error7,error8,error9,error10)
-        setFirstClickState(true)
+    else if(response?.q11!==undefined && ans11 === ''){
+        setError11(true) 
     }
-   
-    
     else{
         let data = {
             ans1,
@@ -125,7 +123,8 @@ const Page1 = ()=>{
             ans7,
             ans8,
             ans9,
-            ans10
+            ans10,
+            ans11
         }
         console.log('posting here',data) 
         let formdata = new FormData()
@@ -141,12 +140,13 @@ const Page1 = ()=>{
         formdata.append('r8', ans8)
         formdata.append('r9', ans9)
         formdata.append('upload', ans10)
+        formdata.append('r11', ans11)
 
         axios.post(`${BASE_URL}/submit`, formdata)
             .then((response)=>{
                 console.log('status',response.data)
 
-        console.log('all answers',  firstClickState,error1,error2,error3,error4,error5,error6,error7,error8,error9,error10)
+        console.log('all answers',error1,error2,error3,error4,error5,error6,error7,error8,error9,error10,error11)
                 if(response.data.status){
                     window.sessionStorage.setItem('messageState',true)
                     navigate(process.env.PUBLIC_URL+`/next`)
@@ -206,6 +206,10 @@ const Page1 = ()=>{
             setAns9(value)
             value.length===0? setError9(true):setError9(false)
             break;
+        case 'q11':
+        setAns11(value)
+        value.length===0? setError11(true):setError11(false)
+            break;
         case 'upload':
             setAns10(e.target.files[0])
             console.log('upload :>> ', e.target.files[0]);
@@ -214,6 +218,57 @@ const Page1 = ()=>{
         default:
             break;
 }
+    }
+
+    const CheckBoxOnChangeValue =(e,dataList)=>{
+        console.log('Question',e.target.name,e.target.value, dataList)
+            let value = e.target.value
+            let name = e.target.name
+            let mylist = dataList.map((value)=> value.value)
+        switch(name){
+            case 'q1':
+                setAns1(mylist)
+                value.length===0? setError1(true):setError1(false)
+                break;
+            case 'q2':
+                setAns2(mylist)
+                value.length===0? setError2(true):setError2(false)
+                break;
+            case 'q3':
+                setAns3(mylist)
+                value.length===0? setError3(true):setError3(false)
+                break;
+            case 'q4':
+                setAns4(mylist)
+                value.length===0? setError4(true):setError4(false)
+                break;
+            case 'q5':
+                setAns5(mylist)
+                value.length===0? setError5(true):setError5(false)
+                break;
+            case 'q6':
+                setAns6(mylist)
+                value.length===0? setError6(true):setError6(false)
+                break;
+            case 'q7':
+                setAns7(mylist)
+                value.length===0? setError7(true):setError7(false)
+                break;
+            case 'q8':
+                setAns8(mylist)
+                value.length===0? setError8(true):setError8(false)
+                break;
+            case 'q9':
+                setAns9(mylist)
+                value.length===0? setError9(true):setError9(false)
+                break;
+            case 'q11':
+            setAns11(mylist)
+            value.length===0? setError11(true):setError11(false)
+                break;
+            default:
+                break;
+        }
     }
 
   const getQuestionType = (respType, question, resValue, TagName, errorState=false)=>{
@@ -237,7 +292,7 @@ const Page1 = ()=>{
             return <Dropdown questionName={TagName} errorState={errorState} question={question} answers={resValue!==null?resValue:['Great', 'Best', 'Better']} onValueChange={onChangeValue}/>
              
         case 'CHECKBOX':
-            return <Checkbox questionName={TagName} errorState={errorState} question={question} answers={resValue.length!==0?resValue:['Great', 'Best', 'Better']} onValueChange={onChangeValue}/>
+            return <Checkbox questionName={TagName} errorState={errorState} question={question} answers={resValue.length!==0?resValue:['Great', 'Best', 'Better']} onValueChange={CheckBoxOnChangeValue}/>
             
         case 'File Upload':
             return <Upload questionName={TagName} errorState={errorState} question={'Picture Upload'} onValueChange={onChangeValue}/>  
@@ -266,7 +321,7 @@ const Page1 = ()=>{
                     </div>
                 : null
                 } 
-                <p className='text-xl text-center'>{response?.description!=='null'?response?.description:'Contact the organiser for more information'} </p>
+                <p className='text-base text-center'>{response?.description!=='null'?response?.description:'Contact the organiser for more information'} </p>
                    
                
             </div>
@@ -301,7 +356,10 @@ const Page1 = ()=>{
             {response?.q10&&response?.q10 !=='NO'?
                  getQuestionType(response.r10,response.q10,[], 'upload', error10): null
                 }
-                
+            {response?.q11?
+                 getQuestionType(response.r11,response.q11,response.rv11?.split('='), 'q11', error11): null
+                }
+
                 {errorMessage!==''?
                      <div className='bg-red-50 p-4 my-4 font-bold text-xl border shadow-lg rounded-xl'>{errorMessage}</div>
                     : 

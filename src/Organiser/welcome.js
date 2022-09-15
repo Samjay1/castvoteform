@@ -18,11 +18,11 @@ const Welcome = ()=>{
 
                 </p>
 
-                <p className='text-center mx-2 p-4 space-x-4'>
+                {/* <p className='text-center mx-2 p-4 space-x-4'>
                     <Link className='text-white p-2 px-3 rounded-lg  hover:bg-gray-900 bg-gray-700' to={`${process.env.PUBLIC_URL}/admin/register`}>Admin Sign Up</Link>
                     <Link className='text-white p-2 px-3 rounded-lg  hover:bg-blue-900 bg-blue-700' to={`${process.env.PUBLIC_URL}/admin/login`}>Admin Sign In</Link>
                     
-                </p>
+                </p> */}
                 <div className='px-4 my-4 space-y-3'>
             
                    

@@ -5,8 +5,8 @@ import TextInput from "../DashboardComponents/TextInput"
 
 
 const Register = ()=>{
-    // const BASE_URL= 'https://castvotegh.awinteck.com/admin';
-    const TEST_URL= 'http://localhost:7001/admin';
+    const BASE_URL= 'https://castvotegh.awinteck.com/admin';
+    // const TEST_URL= 'http://localhost:7001/admin';
     // const navigator = useNavigate()
 
     const [message, setMessage] = useState('');
@@ -45,7 +45,7 @@ const Register = ()=>{
             let body = {
                 email,password
             }
-            axios.post(`${TEST_URL}/register`, body)
+            axios.post(`${BASE_URL}/register`, body)
             .then((response)=>{
                 console.log('response :>> ', response);
                 if(response.data.status){

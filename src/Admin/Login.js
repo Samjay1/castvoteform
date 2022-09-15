@@ -6,8 +6,8 @@ import axios from 'axios';
 
 
 const Login = ()=>{
-    // const BASE_URL= 'https://castvotegh.awinteck.com/admin';
-    const TEST_URL= 'http://localhost:7001/admin';
+    const BASE_URL= 'https://castvotegh.awinteck.com/admin';
+    // const TEST_URL= 'http://localhost:7001/admin';
 
     // window.sessionStorage.clear();
     const navigator = useNavigate();
@@ -53,7 +53,7 @@ const Login = ()=>{
             let body = {
                 email,password
             }
-            axios.post(`${TEST_URL}/login`, body)
+            axios.post(`${BASE_URL}/login`, body)
             .then((response)=>{
                 console.log('response :>> ', response);
                 if(response.data.status){

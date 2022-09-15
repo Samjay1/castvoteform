@@ -67,7 +67,7 @@ const Login = ()=>{
                     },1000)
                 }
             }).catch((error)=>{
-                setMessage('Login Failed. Try again')
+                setMessage('Login Failed. Activate Account')
                 setTimeout(()=>{
                     setMessage('')
                     navigator(`${process.env.PUBLIC_URL}/login`)
@@ -106,10 +106,16 @@ const Login = ()=>{
                     errorState={errorPassword}
                     errorMessage={errorPasswordMessage}
                     onValueChange={onValueChange}/>
-                    {/* <p className='text-right mx-2'><Link className='text-red-600 hover:underline'  to={`${process.env.PUBLIC_URL}/forgotpassword`}>Forgot Password?</Link></p> */}
+                    <p className='text-right mx-2'><Link className='text-red-600 hover:underline'  to={`${process.env.PUBLIC_URL}/forgotpassword`}>Forgot Password?</Link></p>
 
                     <div className='text-center'>
                         <button onClick={OnSubmit} className='bg-gray-700 text-white rounded px-4 py-1 font-bold m-auto'>Sign in</button>
+                    </div>
+
+                    <div>
+                        <p> <span className='text-red-500'>NB:</span> Contact Us to <span className='font-bold text-xl'>Activate</span> your account</p>
+                        <p className="ml-8 text-base">castvote@gmail.com</p>
+                        <p className="ml-7 text-base">+233270000742</p>
                     </div>
                 </div>
             </div>

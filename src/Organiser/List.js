@@ -11,12 +11,12 @@ const List = ()=>{
     const IMAGE_URL= 'https://castvotegh.awinteck.com/';
     // const TEST_URL= 'http://localhost:7001/organiser';
 
-    const [search, setSearch] = useState('');
+  
     const [response, setResponse] = useState(null);
     useEffect(()=>{
         axios.get(`${BASE_URL}/search`)
         .then((response)=>{
-            console.log('response :>> ', response.data.response);
+            // console.log('response :>> ', response.data.response);
             if(response.data.status){
                 setResponse(response.data.response);
             }else{
@@ -25,24 +25,25 @@ const List = ()=>{
         })
     },[])
    
+    const [search, setSearch] = useState('');
     let [searchList,setSearchList] = useState([])
     const OnSearching= (e)=>{
-        let search_value = e.target.value
-        console.log('value :>> ', search_value);
+        let search_value = e.target.value.toLowerCase();
+        // console.log('value :>> ', search_value);
         setSearch(search_value) 
         searchList = response.map((value,index)=>{
-            let searchMatch = value.title.toLowerCase().includes(search_value)
-            let searchMatch2 = value.description.toLowerCase().includes(search_value)
-            let searchMatch3 = value.name.toLowerCase().includes(search_value)
-            console.log('value match',searchMatch)
+            let searchMatch = value.title?.toLowerCase().includes(search_value)
+            let searchMatch2 = value.description?.toLowerCase().includes(search_value)
+            let searchMatch3 = value.name?.toLowerCase().includes(search_value)
+            // console.log('value match',searchMatch)
             if(searchMatch || searchMatch2 || searchMatch3){
                 return (
                     <div key={index} onClick={()=>{previewClick(value.id)}} className=' grid grid-cols-5 m-5 text-gray-600 rounded-3xl border-2 border-gray-400 hover:border-blue-500 hover:text-blue-600 overflow-hidden'>
                         <div className='lg:col-span-2 col-span-5 bg-gray-200 h-36'>
-                            <img className='object-cover h-full w-full' src={`${IMAGE_URL}${value.banner_image}`} alt="" />
+                            <img className='object-cover h-full w-full' src={value.banner_image!==null?`${IMAGE_URL}${value.banner_image}`: `${process.env.PUBLIC_URL}/logo.png`} alt="" />
                         </div>
                         <div className='lg:col-span-3 col-span-5 p-1 h-36 space-y-2 px-3'>
-                            <p className='font-bold text-2xl text-blue-900 lg:text-left text-center lg:mt-0 mt-1'>{value.name}</p>
+                            <p className='font-bold text-2xl text-blue-900 lg:text-left text-center lg:mt-0 mt-1'>By {value.name}</p>
                             <p className='text-xl font-bold'> {value.title}</p>
                             <article className='truncate text-gray-500 text-md'>{value.description}</article>
                         </div>
@@ -59,7 +60,7 @@ const List = ()=>{
 
 
     const previewClick = (id)=>{
-        console.log('clicked',id)
+        // console.log('clicked',id)
         navigator(`${process.env.PUBLIC_URL}/fill/${id}`)
     }
 
@@ -67,10 +68,10 @@ const List = ()=>{
         return (
             <div key={index} onClick={()=>{previewClick(value.id)}} className=' grid grid-cols-5 m-5 text-gray-600 rounded-3xl border-2 border-gray-400 hover:border-blue-500 hover:text-blue-600 overflow-hidden'>
                 <div className='lg:col-span-2 col-span-5 bg-gray-200 h-36'>
-                    <img className='object-cover h-full w-full' src={`${IMAGE_URL}${value.banner_image}`} alt="" />
+                <img className='object-cover h-full w-full' src={value.banner_image!==null?`${IMAGE_URL}${value.banner_image}`: `${process.env.PUBLIC_URL}/logo.png`} alt="" />
                 </div>
                 <div className='lg:col-span-3 col-span-5 p-1 h-36 space-y-2 px-3'>
-                    <p className='font-bold text-2xl text-blue-900 lg:text-left text-center lg:mt-0 mt-1'>{value.name}</p>
+                    <p className='font-bold text-2xl text-blue-900 lg:text-left text-center lg:mt-0 mt-1'>By {value.name}</p>
                     <p className='text-xl font-bold'> {value.title}</p>
                     <article className='truncate text-gray-500 text-md'>{value.description}</article>
                 </div>

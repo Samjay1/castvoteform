@@ -1,7 +1,24 @@
-import { Link } from "react-router-dom"
+import { useState } from "react";
+import { Link,useNavigate } from "react-router-dom"
 import TextInput from "../DashboardComponents/TextInput"
 
 const ForgotPassword = ()=>{
+    const navigator=useNavigate();
+    // const BASE_URL= 'https://castvotegh.awinteck.com/organiser';
+    // const TEST_URL= 'http://localhost:7001/organiser';
+
+    const [email,setEmail] = useState(null)
+    const onChange = (e)=>{
+        console.log('e.target.value :>> ', e.target.value);
+        setEmail(e.target.value)
+    }
+   
+
+    const forgotpasswordBtn = ()=>{
+        if(email !== null){
+            navigator(`${process.env.PUBLIC_URL}/resetpassword/${email}`)
+        }
+    }
     return(
         <>
             <div className="border border-red-100 my-6 py-4 lg:w-1/4 mx-auto w-11/12 text-gray-700 shadow-lg rounded-3xl">
@@ -16,11 +33,11 @@ const ForgotPassword = ()=>{
                 </div>
                 
                 <div className='px-4 my-4 space-y-3'>
-                    <TextInput title={'Token'} label={'Enter your reset token'} inputname={'token'} inputtype={'text'}/>
-                    <p className='text-left text-sm'><span className="text-red-500">NB</span>: Reset token will be sent to this email.</p>
+                    <TextInput title={'Email'} label={'Enter your email'} onValueChange={onChange} inputname={'email'} inputtype={'text'}/>
+                    {/* <p className='text-left text-sm'><span className="text-red-500">NB</span>: Reset token will be sent to this email.</p> */}
 
                     <div className='text-center'>
-                        <button className='bg-gray-700 text-white rounded px-4 py-1 font-bold m-auto'>Forgot Password</button>
+                        <button onClick={forgotpasswordBtn} className='bg-gray-700 text-white rounded px-4 py-1 font-bold m-auto'>Forgot Password</button>
                     </div>
                 </div>
             </div>

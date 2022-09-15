@@ -7,7 +7,7 @@ const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
 class Download extends React.Component {
    render() {
-    console.log('this.props.table_label :>> ', this.props);
+    // console.log('this.props.table_label :>> ', this.props);
     // const data2=[
     //     {q1:'John',
     //      q2:'Manu',

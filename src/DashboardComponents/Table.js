@@ -1,30 +1,36 @@
 import { Link } from "react-router-dom";
 import Download from '../DashboardComponents/Download';
 
-const Table = ({table_name,table_label,table_data,date=true,preview=false,download=true})=>{
+const Table = ({table_name,table_label,table_data,OriginalData,date=true,preview=false,download=true})=>{
    
     const tableHead = table_label?.map((value,index)=>{
         return <th key={index} scope="col" className="px-6 py-3">{value}</th>
     })
-  
     let tableBodyMain =  table_data?.map((data,index)=>{
         // console.log(index,'data :>> ', data);
         let row = Object.keys(data).map((key)=>{ 
-            console.log('key :>> ', key);
             if(key ==='preview'){ //removes extras eg id,q_id and org_id
                 return <td key={key} className="px-6 py-4 bg-red-50">
                         <Link className="text-red-700 hover:text-blue-700 transition duration-200 font-bold underline " to={`${process.env.PUBLIC_URL}/admin/preview/${data[key]}`}>View</Link>
                      </td> 
             }
-            if(key !== 'id' && key !== 'org_id' && key !== 'q_id' && key !== 'time'){ //removes extras eg id,q_id and org_id
+            if(key !== 'id' && key !== 'org_id' && key !== 'q_id' && key !== 'time' ){ //removes extras eg id,q_id and org_id
                 // console.log('key :>> ', key, 'value :>> ', data[key]);
+                
+                if(key === 'a10'){
+                    return <td key={key} className="px-6 py-4 truncate underline text-blue-600"><a href={data[key]} target='_blank' rel="noreferrer" className="w-24">Image Here</a> </td> 
+                }
+                else if(key === 'key'){
+                    return null
+                }
+                
                 return <td key={key} className="px-6 py-4"> {data[key]} </td> 
             }
             return null
         })
-        return <tr key={index} className="bg-white border-b text-black truncate">{row}</tr>
+        
+        return <tr key={index} className="bg-white border-b text-black">{row}</tr>
     })
-
 
  
 
@@ -35,7 +41,7 @@ const Table = ({table_name,table_label,table_data,date=true,preview=false,downlo
                 <div className="lg:space-x-2 pb-1">
                     {/* <Link className="font-normal bg-gray-700 hover:bg-gray-900 text-white px-2 py-2 rounded" to={`${process.env.PUBLIC_URL}/dashboard`} >View all</Link> */}
                     {download &&<div  className='inline-block bg-green-700 text-white py-1 px-3 rounded hover:bg-green-800'>
-                        <Download table_name={table_name} table_label={table_label?table_label:[]} table_data={table_data?table_data:[]}/>
+                        <Download table_name={table_name} table_label={table_label?table_label:[]} table_data={OriginalData?OriginalData:[]}/>
                     </div>}
                 </div>
             </div>
@@ -53,7 +59,7 @@ const Table = ({table_name,table_label,table_data,date=true,preview=false,downlo
                                  }
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="truncate">
                             {tableBodyMain} 
                         </tbody>
                     </table>
