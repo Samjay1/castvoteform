@@ -35,25 +35,31 @@ class Formclass extends Component{
             .then((response) => response.json())
             .then((response)=>{
                 if(response.status){
-                    console.log('FORMLIST :>> ', response.response);
+                    // console.log('FORMLIST :>> ', response.response);
                     this.setState({
                         response:response.response,
                         statee: response.response.state
                     })  
+                }else{
+                    this.setState({
+                        response:[]
+                    })  
                 }
             }).catch((error)=>{
-                console.log('error :>> ', error);
+                this.setState({
+                    response:[]
+                })  
             })
         } 
         getResponse() 
     }
 
     deleteFormBtn = (id)=>{
-        console.log('id deleting :>> ', id);
+        // console.log('id deleting :>> ', id);
         axios.get(`${this.state.BASE_URL}/deleteform/${id}`)
         .then((response)=>{
             if(response.data.status){
-                console.log('response.response :>> ', response.data);
+                // console.log('response.response :>> ', response.data);
                 this.setState({
                     message: 'Form deleting...'
                 })
@@ -68,17 +74,17 @@ class Formclass extends Component{
             this.setState({
                 message:'No forms available'
             })
-            console.log('error :>> ', error);
+            // console.log('error :>> ', error);
         })
     } 
 
     toggleState = (form_id,state)=>{
-        console.log('toggle :>> ',form_id,state);
+        // console.log('toggle :>> ',form_id,state);
 
         axios.post(`${this.state.BASE_URL}/toggle`, {form_id,state})
         .then((response)=>{
             if(response.data.status){
-                console.log('response.response :>> ', response.data);
+                // console.log('response.response :>> ', response.data);
                 this.setState({
                     message: 'Form state updated Successfully. NB: DEACTIVATED forms can\'t be accessed by people',
                     statee: state, 
@@ -97,7 +103,7 @@ class Formclass extends Component{
             this.setState({
                 message:'No forms available'
             })
-            console.log('error :>> ', error.response.data);
+            // console.log('error :>> ', error.response.data);
         })
     }
      
@@ -126,9 +132,8 @@ class Formclass extends Component{
     }
 
     render(){
-        console.log('this.state.org_id :>> ', this.state.org_id);
-        let org_id = window.sessionStorage.getItem('org_id')
-        console.log('resValue', this.state.resValue1)
+        // console.log('this.state.response :>> ', this.state.response);
+        let org_id = window.sessionStorage.getItem('org_id') 
         if(!org_id){
             return <Login/>
         }else{
@@ -212,7 +217,7 @@ class Formclass extends Component{
 
                         {this.state.searchState ? null : 
                         
-                        this.state.response===null ?   <p className='font-bold text-2xl text-blue-900 lg:text-left text-center lg:mt-0 mt-1 ml-5'>Loading...</p>
+                        this.state.response===null ?   <p className='font-bold text-2xl text-blue-900 lg:text-left text-center lg:mt-0 mt-1 ml-5'>kjLoading...</p>
                         : 
                         this.state.response.length!==0 ?
 

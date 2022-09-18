@@ -86,7 +86,7 @@ const List = ()=>{
                     <img className='h-16 m-auto' src={process.env.PUBLIC_URL+"/logo.png"} alt="" />
                 </div>
                 <p className="text-3xl font-bold text-center ">Nomination <span className='text-red-600'>Forms</span></p>
-                <p className='text-center mx-2'>Search for your Nomination forms <a className='text-red-600 hover:underline' href='https://castvotegh.com/' target="_blank"  rel="noreferrer" >Visit Castvote</a></p>
+                <p className='text-center mx-2'>Search for your Nomination forms</p>
 
                 <div className='my-5 md:w-1/2 w-11/12 mx-auto'> 
                     <input onChange={OnSearching} type={'text'} className=" border border-gray-400 rounded-3xl p-3 pl-5 focus:outline-none w-full focus:border-blue-300 text-input rounded-0 pb-2 px-2 hover:bg-blue-50"  placeholder="Type your response"/>

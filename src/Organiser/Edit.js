@@ -6,15 +6,15 @@ import Dropdown from '../components/dropdown';
 import Radio from '../components/radio';
 import React,{Component} from 'react';
 import axios  from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
 import Login from './Login';
 import * as XLSX from 'xlsx'; 
 
 
 const Forms  = ()=>{
     const {id} = useParams();
-    console.log(id)
-    return <EditForm form_id={id}/>
+    const navigator = useNavigate();
+    return <EditForm form_id={id} navigator={navigator}/>
 }
 
 class  EditForm extends Component{
@@ -291,7 +291,7 @@ class  EditForm extends Component{
             this.setState({
                 message:message
             })
-            this.endmessage()
+            this.endmessage(true)
             console.log('response post:>>', message);
         }).catch((error)=>{
             let message = error.data.message
@@ -395,13 +395,16 @@ class  EditForm extends Component{
 
     }
 
-    endmessage = () => {
+    endmessage = (nextPage=false) => {
         setTimeout(() => {
             console.log('timeout called')
             this.setState({
                 message:null
             })
-        }, 3000);
+            if(nextPage){
+                this.props.navigator(`${process.env.PUBLIC_URL}/Forms`)
+            }
+        }, 2000);
     }
     
     

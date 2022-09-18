@@ -9,8 +9,14 @@ import axios from 'axios';
 import Radio from '../components/radio';
 import Login from '../Admin/Login';
 import * as XLSX from 'xlsx';
+import { useNavigate } from 'react-router-dom';
 
-class Forms extends React.Component{
+
+const Forms = ()=>{
+    const navigator = useNavigate();
+    return <Formclass navigator={navigator}/>
+}
+class Formclass extends React.Component{
     constructor(){
         super()
         this.state={ 
@@ -259,13 +265,16 @@ class Forms extends React.Component{
     }
     }
 
-    endmessage = () => {
+    endmessage = (nextPage=false) => {
         setTimeout(() => {
             console.log('timeout called')
             this.setState({
                 message:null
             })
-        }, 3000);
+            if(nextPage){
+                this.props.navigator(`${process.env.PUBLIC_URL}/admin/Forms`)
+            }
+        }, 2000);
     }
 
     submitForm = ()=>{
@@ -299,7 +308,7 @@ class Forms extends React.Component{
         }
         console.log('MY RESPONSE :>> ', this.state.bannerImage, body);
         let org_id = this.state.orgId;
-        console.log('Org id addup',org_id)
+        // console.log('Org id addup',org_id)
 
         let formdata = new FormData()
         formdata.append('file',this.state.bannerImage)
@@ -352,8 +361,8 @@ class Forms extends React.Component{
                 this.setState({
                     message:message
                 })
-                this.endmessage()
-                console.log('response post:>>', response);
+                this.endmessage(true)
+                // console.log('response post:>>', response);
             }).catch((error)=>{
                 let message = error.data?.message ? error.data?.message: 'Please choose one IMAGE or Banner Image is too big'
                 this.setState({
@@ -366,7 +375,7 @@ class Forms extends React.Component{
     }
 
     onChecking = (e)=>{
-        console.log('e.target.name, :>> ', e.target.name, e.target.checked);
+        // console.log('e.target.name, :>> ', e.target.name, e.target.checked);
         switch(e.target.name){
             case 'checkState1':
                 this.setState({
@@ -429,7 +438,7 @@ class Forms extends React.Component{
     }
 
     readUploadFile = (e, name)=>{
-        console.log('readuploadfile :>>');
+        // console.log('readuploadfile :>>');
         e.preventDefault();
         if(e.target.files){
             const reader = new FileReader();
@@ -439,7 +448,7 @@ class Forms extends React.Component{
                 const sheetName = workbook.SheetNames[0];
                 const worksheet = workbook.Sheets[sheetName];
                 const json = XLSX.utils.sheet_to_json(worksheet);
-                console.log('json :>> ', json);
+                // console.log('json :>> ', json);
                 let formatedList = '';
                 let customData = json.map((value,index)=>{
                     if(index===0){
@@ -449,8 +458,8 @@ class Forms extends React.Component{
                     }
                 })
                 this.onChangeResValue({name:name, value:formatedList})
-                console.log('customData :>> ', customData);
-                console.log('formatedList :>> ', formatedList);
+                // console.log('customData :>> ', customData);
+                // console.log('formatedList :>> ', formatedList);
             };
             reader.readAsArrayBuffer(e.target.files[0]);
         }

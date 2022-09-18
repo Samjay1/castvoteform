@@ -8,8 +8,14 @@ import axios from 'axios';
 import Radio from '../components/radio';
 import Login from './Login';
 import * as XLSX from 'xlsx';
+import { useNavigate } from 'react-router-dom';
 
-class Forms extends React.Component{
+
+const Forms = ()=>{
+    const navigator = useNavigate();
+    return <Formclass navigator={navigator}/>
+}
+class Formclass extends React.Component{
     constructor(){
         super()
         this.state={ 
@@ -161,13 +167,16 @@ class Forms extends React.Component{
     }
     }
 
-    endmessage = () => {
+    endmessage = (nextPage=false) => {
         setTimeout(() => {
             console.log('timeout called')
             this.setState({
                 message:null
             })
-        }, 3000);
+            if(nextPage){
+                this.props.navigator(`${process.env.PUBLIC_URL}/Forms`)
+            }
+        }, 2000);
     }
 
     submitForm = ()=>{
@@ -251,7 +260,8 @@ class Forms extends React.Component{
                 this.setState({
                     message:message
                 })
-                this.endmessage()
+                this.endmessage(true)
+               
                 console.log('response post:>>', response);
             }).catch((error)=>{
                 let message = error.data?.message ? error.data?.message: 'Banner Image is too big (Please choose another one)'

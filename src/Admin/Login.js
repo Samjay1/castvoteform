@@ -1,5 +1,5 @@
 import '../logo.png';
-import { Link,useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import TextInput from '../DashboardComponents/TextInput';
 import { useState } from 'react';
 import axios from 'axios';
@@ -88,8 +88,7 @@ const Login = ()=>{
                 </div>
                 <p className="text-3xl font-bold text-center ">Sign <span className='text-red-600'>In</span></p>
                 <p className="text-xl underline font-bold text-center ">Admin</p>
-                <p className='text-center mx-2'>Create a new account? <Link className='text-red-600 hover:underline' to={`${process.env.PUBLIC_URL}/admin/register`}>Sign Up</Link></p>
-
+                
                 <div className='px-4 my-4 space-y-3'>
                     <TextInput 
                         title={'Email'} 

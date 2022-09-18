@@ -18,9 +18,9 @@ import List from './Organiser/List';
 import Welcome from './Organiser/welcome';
 
 import ALogin from './Admin/Login';
-import ARegister from './Admin/Register';
-import AResetPassword from './Admin/ResetPassword';
-import AForgotPassword from './Admin/ForgotPassword';
+// import ARegister from './Admin/Register';
+// import AResetPassword from './Admin/ResetPassword';
+// import AForgotPassword from './Admin/ForgotPassword';
 import ADashboard from './Admin/Dashboard';
 import AForms from './Admin/Forms';
 import AAddForm from './Admin/AddForm';
@@ -69,15 +69,15 @@ function App() {
   return (
     <div>
       <HashRouter basename={'/'}>
-       
-
        <Routes>
        <Route exact path={`${process.env.PUBLIC_URL}/*`} element={<Welcome/>}/>
        
          <Route exact path={`${process.env.PUBLIC_URL}/`} element={
          <ErrorBoundary>
-         <Welcome/>
+         <List/>
        </ErrorBoundary>}/> 
+
+       <Route exact path={`${process.env.PUBLIC_URL}/welcome`} element={<Welcome/>}/>
  
        <Route exact path={`${process.env.PUBLIC_URL}/list`} element={
          <ErrorBoundary>
@@ -142,15 +142,14 @@ function App() {
          <Route path="/*" component={Register} />
  
          <Route exact path={`${process.env.PUBLIC_URL}/admin/login`} element={<ALogin/>}/>
-         <Route exact path={`${process.env.PUBLIC_URL}/admin/register`} element={<ARegister/>}/>
-         <Route exact path={`${process.env.PUBLIC_URL}/admin/resetpassword`} element={<AResetPassword/>}/>
-         <Route exact path={`${process.env.PUBLIC_URL}/admin/forgotpassword`} element={<AForgotPassword/>}/>
+         {/* <Route exact path={`${process.env.PUBLIC_URL}/admin/register`} element={<ARegister/>}/> */}
+         {/* <Route exact path={`${process.env.PUBLIC_URL}/admin/resetpassword`} element={<AResetPassword/>}/> */}
+         {/* <Route exact path={`${process.env.PUBLIC_URL}/admin/forgotpassword`} element={<AForgotPassword/>}/> */}
          <Route exact path={`${process.env.PUBLIC_URL}/admin/dashboard`} element={<ADashboard/>}/>
          <Route exact path={`${process.env.PUBLIC_URL}/admin/Forms`} element={<AForms/>}/>
          <Route exact path={`${process.env.PUBLIC_URL}/admin/add`} element={<AAddForm/>}/>
          <Route exact path={`${process.env.PUBLIC_URL}/admin/nominees`} element={<ANominee/>}/> 
          <Route exact path={`${process.env.PUBLIC_URL}/admin/nomineestable/:id`} element={<ANomineeTable/>}/>
-        
          <Route exact path={`${process.env.PUBLIC_URL}/admin/preview/:orgId`} element={<OrgDashboard/>}/>
          <Route exact path={`${process.env.PUBLIC_URL}/admin/edit/:id`} element={<AEdit/>}/>
          <Route exact path={`${process.env.PUBLIC_URL}/admin/organisers`} element={
