@@ -97,9 +97,13 @@ const List = ()=>{
                     {/* {searchList.length!==0? searchList: 'loading'} */}
 
                     {response===null?
-                    <p className='font-bold text-2xl text-blue-900 lg:text-left text-center lg:mt-0 mt-1 ml-5'>Loading...</p>
+                    <div className='font-bold text-3xl text-blue-900 lg:text-left lg:mt-0 mt-1'>
+                        <p className='text-center'>Loading...</p>
+                    </div>
                     : response.length===0?
-                    <p className='font-bold text-3xl text-blue-900 lg:text-left text-center lg:mt-0 mt-1 ml-5'>Empty List</p>
+                    <div className='font-bold text-3xl text-blue-900 lg:text-left lg:mt-0 mt-1'>
+                        <p className='text-center'>Empty List</p>
+                    </div>
                     : search.length!==0? 
                     searchList
                     :
