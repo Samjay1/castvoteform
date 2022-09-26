@@ -61,7 +61,8 @@ const Register = ()=>{
                     // },50000)
                 }
             }).catch((error)=>{
-                console.log('error :>> ', error);
+                console.log('13error :>> mjhkj ', error);
+                setMessage('FAILED: Email already in use')
             })
 
             

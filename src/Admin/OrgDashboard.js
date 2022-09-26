@@ -1,4 +1,4 @@
-import { Link, useParams} from "react-router-dom";
+import { Link, useParams, useNavigate} from "react-router-dom";
 import Nav from "../DashboardComponents/AdminNav";
 import Footer from "../DashboardComponents/Footer";
 import MyBar from "../DashboardComponents/MyBar";
@@ -10,6 +10,7 @@ import axios from "axios";
 
 const OrgDashboard = ()=>{
     const {orgId} = useParams();
+    const navigator = useNavigate();
 
     const BASE_URL= 'https://castvotegh.awinteck.com/organiser';
     const BASE_URL2= 'https://castvotegh.awinteck.com/admin';
@@ -20,6 +21,8 @@ const OrgDashboard = ()=>{
     const [chartData, setChartData] = useState([])
     const [organiser, setOrganiser] = useState([])
     const [passwordState, setPasswordState] = useState(null)
+    const [message, setMessage] = useState(null);
+    const [showDel, setShowDel] = useState(false)
  
         useEffect(()=>{
             axios.all([
@@ -27,7 +30,7 @@ const OrgDashboard = ()=>{
                 axios.get(`${BASE_URL2}/organiser/${orgId}`)
             ])
             .then(axios.spread((dashboard,organiser)=>{
-                // console.log('dashboard :>> ',organiser.data.response);
+                // console.log('dashboard :>> ',dashboard.data.response);
                 setDashboardData(dashboard.data.response)
                 setChartData(dashboard.data.response.chart)
                 setOrganiser(organiser.data.response)
@@ -90,6 +93,29 @@ const OrgDashboard = ()=>{
                     console.log('error :>> ', error);
                 })
         }
+
+        let deleteOrg = (org_id)=>{
+            // console.log('toggle :>> ',org_id);
+
+            // console.log(organiser)
+            axios.get(`${BASE_URL2}/delete_org/${org_id}`)
+            .then((response)=>{
+                if(response.data.status){ 
+                    setMessage('Organiser DELETED') 
+                    setTimeout(() => {
+                        setMessage("Account deleted successfully")
+                        navigator(`${process.env.PUBLIC_URL}/admin/organisers`) 
+                    }, 2000);
+                }
+            }).catch((error)=>{
+               
+                setTimeout(() => {
+                    setMessage('Failed to delete')
+                }, 2000);
+                console.log('error :>> ', error.response.data);
+            })
+        }
+
  
         let admin_id = window.sessionStorage.getItem('admin_id') 
         if(!admin_id){
@@ -101,7 +127,22 @@ const OrgDashboard = ()=>{
                     <Nav nominee={true}/>
                     <main className="lg:mx-5 my-5 w-full px-5">
                     {/* <!-- BASIC PROFILE INFO --> */}
-                    <p className="text-2xl font-normal text-gray-500">Preview Organiser, ({organiser.status})</p>
+                    {message? <p className='p-3 bg-green-100 text-base'>{message}</p>: null}
+                   <div className="flex justify-between mt-2">
+                   <p className="text-2xl font-normal text-gray-500">Preview Organiser, ({organiser.status})</p>
+                    {
+                        showDel
+                        ?
+                        <button onClick={()=>{deleteOrg(dashboardData.org_id)}} className="flex p-1 px-4 text-white hover:bg-red-900 bg-red-700 rounded-3xl">
+                            Permanent Delete
+                        </button>
+                        :
+                        <button onClick={()=>{setShowDel(true)}} className="flex p-1 px-4 text-white hover:bg-red-900 bg-red-700 rounded-3xl">
+                            Delete
+                        </button>
+                    }
+                    
+                   </div>
                     <div className="flex space-x-2">
                         <div>
                             <p className="text-xl uppercase font-bold">{organiser.name} <span className="lowercase">({organiser.email})</span></p>
@@ -150,19 +191,7 @@ const OrgDashboard = ()=>{
                                 </div>
                             </div>
 
-                            {/* <!-- Referrals card --> */}
-                            {/* <div className="bg-blue-100 shadow-lg text-blue-700  text-sm rounded-xl">
-                                <div className="p-4">
-                                    <p>Payments</p>
-                                    <p  className="text-3xl"> N/A</p>
-                                </div>
-                                <div className="rounded-b-xl px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 transition duration-200">
-                                    <Link className="flex" to={`${process.env.PUBLIC_URL}/payments`}>see more <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 my-1 ml-3 " viewBox="0 0 20 20" fill="currentColor">
-                                        <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                                        </svg> 
-                                    </Link>
-                                </div>
-                            </div> */}
+                            
                         </div>
 
                         <div className="col-span-4 flex flex-wrap space-y-5 lg:space-y-0 my-5  shadow-lg lg:p-4 p-2 border-2  rounded-xl">
