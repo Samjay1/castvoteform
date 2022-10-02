@@ -45,7 +45,7 @@ const List = ()=>{
                         <div className='lg:col-span-3 col-span-5 p-1 h-36 space-y-2 px-3'>
                             <p className='font-bold text-2xl text-blue-900 lg:text-left text-center lg:mt-0 mt-1'>By {value.name}</p>
                             <p className='text-xl font-bold'> {value.title}</p>
-                            <article className='truncate text-gray-500 text-md'>{value.description}</article>
+                            <article className='truncate text-gray-500 text-md'>{value.description !== 'null' ? value.description: '' }</article>
                         </div>
                     </div>
                 )
@@ -73,7 +73,7 @@ const List = ()=>{
                 <div className='lg:col-span-3 col-span-5 p-1 h-36 space-y-2 px-3'>
                     <p className='font-bold text-2xl text-blue-900 lg:text-left text-center lg:mt-0 mt-1'>By {value.name}</p>
                     <p className='text-xl font-bold'> {value.title}</p>
-                    <article className='truncate text-gray-500 text-md'>{value.description}</article>
+                    <article className='truncate text-gray-500 text-md'>{value.description !== 'null' ? value.description: '' }</article>
                 </div>
             </div>
         )
