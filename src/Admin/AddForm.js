@@ -497,7 +497,7 @@ class Formclass extends React.Component{
                     <div className="border my-5 space-y-2  p-5 shadow-xl rounded-xl">
                         <p className='pl-2 text-2xl'>Form Description</p>
                         <label>
-                            <textarea name={'decription'} onChange={(e)=>{this.setState({description:e.target.value})}} className="border-b border-r  focus:outline-none w-full focus:border-black text-input rounded-b py-2 px-2 hover:bg-red-50"  placeholder="Type your response"></textarea>
+                            <textarea name={'description'} onChange={(e)=>{this.setState({description:e.target.value})}} className="border-b border-r  focus:outline-none w-full focus:border-black text-input rounded-b py-2 px-2 hover:bg-red-50"  placeholder="Type your response"></textarea>
                         </label>
                     </div>
 
